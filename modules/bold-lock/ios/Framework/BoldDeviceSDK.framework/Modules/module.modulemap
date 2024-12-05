@@ -1,0 +1,11 @@
+framework module BoldDeviceSDK {
+  umbrella header "BoldDeviceSDK.h"
+  export *
+
+  module * { export * }
+}
+
+module BoldDeviceSDK.Swift {
+  header "BoldDeviceSDK-Swift.h"
+  requires objc
+}

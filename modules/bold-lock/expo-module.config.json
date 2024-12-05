@@ -1,0 +1,15 @@
+{
+  "platforms": ["apple", "android", "web"],
+  "apple": {
+    "modules": ["BoldLockModule"]
+  },
+  "android": {
+    "gradleAarProjects": [
+      {
+        "name": "bold-device-sdk-release-aar",
+        "aarFilePath": "android/libs/bold-device-sdk-release.aar"
+      }
+    ],
+    "modules": ["expo.modules.boldlock.BoldLockModule"]
+  }
+}

@@ -1,0 +1,454 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 6.0.2 effective-5.10 (swiftlang-6.0.2.1.2 clang-1600.0.26.4)
+// swift-module-flags: -target arm64-apple-ios12.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name BoldDeviceSDK
+// swift-module-flags-ignorable: -no-verify-emitted-module-interface
+import AVKit
+import AudioToolbox
+@_exported import BoldDeviceSDK
+import Combine
+import CommonCrypto
+import CoreBluetooth
+import CoreLocation
+import Foundation
+import Intents
+import Swift
+import SwiftUI
+import UserNotifications
+import WatchConnectivity
+import WidgetKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@_hasMissingDesignatedInitializers public class BackendAPI {
+  public var baseURL: URL
+  public typealias GetAccessToken = (_ forceRefresh: Bool, _ blocking: Bool, _ retries: Int, _ complete: @escaping ((AuthToken?, SDKError?) -> Void)) -> Void
+  public func setGetAccessToken(_ getAccessToken: GetAccessToken?, retries: Int)
+  public func onUnauthenticated(_ onUnauthenticated: @escaping () -> Void)
+  public func getAccountId(authToken: AuthToken, _ complete: @escaping (AccountID?, SDKError?) -> Void)
+  public func get(_ path: String, _ parameters: [String : String?] = [:], headers: [String : String?] = [:], body: Json? = nil, complete: @escaping (Json?, SDKError?) -> Void)
+  public func put(_ path: String, _ parameters: [String : String?] = [:], headers: [String : String?] = [:], body: Json? = nil, complete: @escaping (Json?, SDKError?) -> Void)
+  public func post(_ path: String, _ parameters: [String : String?] = [:], headers: [String : String?] = [:], body: Json? = nil, formFields: [String : String] = [:], complete: @escaping (Json?, SDKError?) -> Void)
+  public func delete(_ path: String, _ parameters: [String : String?] = [:], headers: [String : String?] = [:], body: Json? = nil, complete: @escaping (Json?, SDKError?) -> Void)
+  @objc deinit
+}
+public protocol AppAnalytics {
+  func start(accountId: AccountID)
+  func logEvent(eventName: String, parameters: [String : String])
+  func logError(errorType: String, screenName: String)
+  func end()
+}
+public let noAppAnalytics: AppAnalytics
+public enum CommandType : String, CaseIterable, Codable, Equatable {
+  case Activate
+  case AutoActivate
+  case ActivateWithKeepActive
+  case Deactivate
+  case FirmwareUpdate
+  public init?(rawValue: Swift.String)
+  public typealias AllCases = [BoldDeviceSDK.CommandType]
+  public typealias RawValue = Swift.String
+  nonisolated public static var allCases: [BoldDeviceSDK.CommandType] {
+    get
+  }
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct Command : Codable, Equatable {
+  public static func == (a: BoldDeviceSDK.Command, b: BoldDeviceSDK.Command) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public class EDPCache : PersistentCache<[Device]> {
+  public init(memcache: Bool = false)
+  @objc deinit
+}
+public class DeviceImageDataCache : PersistentCacheDictionary<DeviceID, Data> {
+  public init()
+  @objc deinit
+}
+@available(iOS 13.0, *)
+public class ViewModel : ObservableObject {
+  final public let sdk: BoldDeviceSDKImpl
+  @Combine.Published @_projectedValueProperty($isLoggedIn) public var isLoggedIn: Bool {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  public var $isLoggedIn: Combine.Published<Swift.Bool>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  @Combine.Published @_projectedValueProperty($devices) public var devices: [Device] {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  public var $devices: Combine.Published<[BoldDeviceSDK.Device]>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  public init(_ sdk: BoldDeviceSDKImpl)
+  public func setDevices(_ devices: [Device])
+  public func device(_ id: DeviceID) -> Device?
+  public func deviceViewModel(_ id: DeviceID) -> DeviceViewModel
+  @available(iOS 13.0, *)
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+@available(iOS 13.0, *)
+public class DeviceViewModel : ObservableObject {
+  @Combine.Published @_projectedValueProperty($device) public var device: Device? {
+    get
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    set
+    @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+    _modify
+  }
+  public var $device: Combine.Published<BoldDeviceSDK.Device?>.Publisher {
+    get
+    @available(iOS 14.0, tvOS 14.0, watchOS 7.0, macOS 11.0, *)
+    set
+  }
+  final public let sdk: BoldDeviceSDKImpl
+  public init(_ sdk: BoldDeviceSDKImpl)
+  @available(iOS 13.0, *)
+  public typealias ObjectWillChangePublisher = Combine.ObservableObjectPublisher
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class BackendLogger {
+  public static func round(_ value: Double) -> Double
+  public func setEnabled(enabled: Bool)
+  public func setAccountId(_ accountId: AccountID?)
+  public func sendMsg(environment: String, msg: String)
+  public func logMsg(_ msg: String)
+  public func send(environment: String)
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class SDKLogger {
+  public static func onLog(callback: @escaping ([Any]) -> Void) -> Callback
+  public static func info(_ items: Any...)
+  public static func debug(_ items: Any...)
+  @objc deinit
+}
+public struct Json : CustomStringConvertible, Codable, Equatable {
+  public var description: String {
+    get
+  }
+  public init?(_ json: Any?)
+  public init(fromData: Data) throws
+  public init?(fromData: Data?)
+  public init?(fromString: String?)
+  public init?<T>(fromObject: T?) where T : Swift.Encodable
+  public func string(_ path: String...) -> String?
+  public func int(_ path: String...) -> Int?
+  public func int64(_ path: String...) -> Int64?
+  public func uint64(_ path: String...) -> UInt64?
+  public func double(_ path: String...) -> Double?
+  public func bool(_ path: String...) -> Bool?
+  public func date(_ path: String...) -> Date?
+  public func obj(_ path: String...) -> [String : Any]?
+  public func array(_ path: String...) -> [Json]?
+  public func data(_ path: String...) -> Data?
+  public func base64(_ path: String...) -> Data?
+  public func json(_ path: String...) -> Json?
+  public func value(_ path: [String]) -> Any?
+  public init(from decoder: Decoder) throws
+  public func encode(to encoder: Encoder) throws
+  public static func == (lhs: Json, rhs: Json) -> Bool
+}
+@_hasMissingDesignatedInitializers public class PersistentMap<Key, Value> where Key : Swift.Hashable, Value : Swift.Decodable, Value : Swift.Encodable, Value : Swift.Equatable {
+  @objc deinit
+}
+public class PersistentCache<T> where T : Swift.Decodable, T : Swift.Encodable, T : Swift.Equatable {
+  public init(_ baseId: String, _ id: Any? = nil, memcache: Bool = true)
+  public func getExpiryDate() -> Date
+  public func read() -> T?
+  public func write(_ value: T, expiresAfter: TimeInterval)
+  public func flush()
+  @objc deinit
+}
+public class PersistentCacheDictionary<K, T> where K : Swift.Hashable, T : Swift.Decodable, T : Swift.Encodable, T : Swift.Equatable {
+  public init(_ baseId: String)
+  public func getExpiryDate(_ key: K) -> Date
+  public func read(_ key: K) -> T?
+  public func write(_ key: K, _ value: T, expiresAfter: TimeInterval)
+  public func flush(_ key: K)
+  public func flushAll()
+  @objc deinit
+}
+extension Data {
+  public var copy: Data {
+    get
+  }
+}
+@_hasMissingDesignatedInitializers public class BoldDeviceSDK {
+  public func login(authorizationCode: String, clientId: String, clientSecret: String, redirectUri: String?, _ complete: @escaping (AuthToken?, SDKError?) -> Void)
+  public func isLoggedIn(_ complete: @escaping (Bool, SDKError?) -> Void)
+  public func logout(_ complete: @escaping (SDKError?) -> Void)
+  public func getAccessToken(forceRefresh: Bool, _ complete: @escaping (AuthToken?, SDKError?) -> Void)
+  public func getDevices(_ complete: @escaping ([Device]?, SDKError?) -> Void)
+  public func getInstallableDevices() -> [DeviceBLE]
+  public func getWokenUpDevice(complete: @escaping (DeviceID?) -> Void)
+  public func refreshDevices(_ complete: @escaping ([Device]?, SDKError?) -> Void)
+  public func activate(deviceId: DeviceID, keepActiveUntil: Date? = nil, allowButtonKeepActiveCancel: Bool = false, _ complete: @escaping (TimeInterval?, SDKError?) -> Void)
+  public func deactivate(deviceId: DeviceID, _ complete: @escaping (TimeInterval?, SDKError?) -> Void)
+  public func processMessages(deviceId: DeviceID, _ complete: @escaping (SDKError?) -> Void)
+  public func updateFirmware(deviceId: DeviceID, progress: @escaping (FirmwareProgress) -> Void, _ complete: @escaping (SDKError?) -> Void)
+  public func onLoginChanged(loginChanged: @escaping (Bool) -> Void) -> Callback
+  public func onDevicesChanged(devicesChanged: @escaping ([Device]) -> Void) -> Callback
+  @objc deinit
+}
+public let BoldDeviceSDKVersion: Swift.String
+public typealias DeviceID = Int64
+public typealias AccountID = Int64
+public typealias AuthToken = String
+public enum Locked : String, Codable {
+  case Locked
+  case Unlocked
+  case Unknown
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct Device : Codable, Equatable, Identifiable {
+  public let id: DeviceID
+  public let name: String
+  public let permissionHash: String
+  public let activatable: Bool
+  public let actualFirmwareVersion: Int
+  public let hasGateway: Bool
+  public let locked: Locked
+  public let json: Json
+  public var ble: DeviceBLE?
+  public static func == (a: BoldDeviceSDK.Device, b: BoldDeviceSDK.Device) -> Swift.Bool
+  public typealias ID = BoldDeviceSDK.DeviceID
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct DeviceBLE : Codable, Equatable {
+  public let id: DeviceID
+  public let type: UInt8
+  public let model: UInt8
+  public let address: String?
+  public let protocolVersion: UInt8
+  public let isInRange: Bool
+  public let isActivatable: Bool
+  public let isInstallable: Bool
+  public let isInDFUMode: Bool
+  public let shouldTimeSync: Bool
+  public let eventsAvailable: Bool
+  public let isWokenUp: Bool
+  public let isBusy: Bool
+  public let rssi: Int16
+  public let lastRssi: Int16
+  public let distance: Float
+  public let lastSeen: Date?
+  public let isActive: Bool
+  public static func == (a: BoldDeviceSDK.DeviceBLE, b: BoldDeviceSDK.DeviceBLE) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct AccessPoint : Codable, Equatable {
+  public var ssid: String
+  public var rssi: Int
+  public static func == (a: BoldDeviceSDK.AccessPoint, b: BoldDeviceSDK.AccessPoint) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct Organization : Codable, Equatable {
+  public var id: Int64
+  public var name: String
+  public static func == (a: BoldDeviceSDK.Organization, b: BoldDeviceSDK.Organization) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct BLEState : Codable, Equatable {
+  public var bluetoothOn: Bool
+  public static func == (a: BoldDeviceSDK.BLEState, b: BoldDeviceSDK.BLEState) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct GeoLocation : Codable, Equatable {
+  public var latitude: Double
+  public var longitude: Double
+  public init(latitude: Double, longitude: Double)
+  public static func == (a: BoldDeviceSDK.GeoLocation, b: BoldDeviceSDK.GeoLocation) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public enum FirmwareStatus : String, Codable {
+  case UploadingPart1
+  case UploadingPart2
+  case Completed
+  case Booting
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public struct FirmwareProgress : Codable, Equatable {
+  public var percentage: Int
+  public var status: FirmwareStatus
+  public init(percentage: Int, status: FirmwareStatus)
+  public static func == (a: BoldDeviceSDK.FirmwareProgress, b: BoldDeviceSDK.FirmwareProgress) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public protocol Callback {
+  func remove()
+}
+public struct SDKError : Error {
+  public let type: SDKErrorType
+  public let message: String
+  public let status: Int
+  public let error: Error?
+  public let errorCode: String?
+  public init(_ type: SDKErrorType, _ message: String? = nil, status: Int? = nil, error: Error? = nil, errorCode: String? = nil)
+  public var errorDescription: String {
+    get
+  }
+}
+public struct Translations : Codable, Equatable {
+  public static let defaultTranslations: BoldDeviceSDK.Translations
+  public var inVicinity: String
+  public var activateWhenNear: String
+  public var clickToActivate: String
+  public var activateAction: String
+  public var activationSuccessful: String
+  public var leaveAlert: String
+  public static func == (a: BoldDeviceSDK.Translations, b: BoldDeviceSDK.Translations) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct AutoActivation : Codable, Equatable {
+  public var enabled: Bool
+  public var sensitivity: Int
+  public var notification: Bool
+  public init(enabled: Bool, sensitivity: Int, notification: Bool)
+  public static func == (a: BoldDeviceSDK.AutoActivation, b: BoldDeviceSDK.AutoActivation) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct LeaveAlert : Codable, Equatable {
+  public var enabled: Bool
+  public init(enabled: Bool)
+  public static func == (a: BoldDeviceSDK.LeaveAlert, b: BoldDeviceSDK.LeaveAlert) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct DeviceConfig : Codable, Equatable {
+  public var deviceId: DeviceID
+  public var geoLocation: GeoLocation
+  public var autoActivation: AutoActivation
+  public var leaveAlert: LeaveAlert
+  public init(deviceId: DeviceID, geoLocation: GeoLocation, autoActivation: AutoActivation, leaveAlert: LeaveAlert)
+  public static func == (a: BoldDeviceSDK.DeviceConfig, b: BoldDeviceSDK.DeviceConfig) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public enum SDKErrorType : Codable {
+  case BLECommunicationError
+  case CallspotCommunicationError
+  case HandshakeExpired
+  case ClientBlocked
+  case AccessDenied
+  case DeviceAlreadyInstalled
+  case DeviceNotReady
+  case NotAuthenticated
+  case APIError
+  case InternalError
+  case AccessPointNotFound
+  case InvalidAccessPointPassword
+  case NoInternetConnection
+  case Aborted
+  public static func == (a: BoldDeviceSDK.SDKErrorType, b: BoldDeviceSDK.SDKErrorType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public func encode(to encoder: any Swift.Encoder) throws
+  public var hashValue: Swift.Int {
+    get
+  }
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct Handshake : Codable, Equatable {
+  public static func == (a: BoldDeviceSDK.Handshake, b: BoldDeviceSDK.Handshake) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+@objc @_hasMissingDesignatedInitializers public class WatchSupport : NSObject, WCSessionDelegate {
+  public func requestWatchConnect()
+  @objc public func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?)
+  @objc public func sessionDidBecomeInactive(_ session: WCSession)
+  @objc public func sessionDidDeactivate(_ session: WCSession)
+  @objc public func session(_ session: WCSession, didReceiveMessage message: [String : Any], replyHandler: @escaping ([String : Any]) -> Void)
+  public static let isWatch: Swift.Bool
+  @objc deinit
+}
+public class BoldDeviceSDKImpl {
+  public static var instance: BoldDeviceSDK.BoldDeviceSDKImpl
+  public init(appAnalytics: AppAnalytics = noAppAnalytics)
+  public func setDebugLogging(enabled: Bool)
+  public func getBaseURL() -> String
+  public func setBaseURL(_ baseURL: String)
+  public func setDeviceConfig(_ configuration: [DeviceConfig])
+  public func setTranslations(_ translations: Translations)
+  public func setTranslations(_ translations: NSDictionary)
+  public func completeReloginOnTimeout(error: SDKError = SDKError(.NotAuthenticated, "Could not login user"))
+  public func login(authorizationCode: String, clientId: String, clientSecret: String, redirectUri: String?, _ complete: @escaping (AuthToken?, SDKError?) -> Void)
+  public func isLoggedIn(complete: @escaping (Bool, SDKError?) -> Void)
+  public func getAccessToken(forceRefresh: Bool, complete: @escaping (AuthToken?, SDKError?) -> Void)
+  public func getAccessTokenForBackgroundTask(complete: @escaping (AuthToken?, SDKError?) -> Void)
+  public func logout(_ complete: @escaping (SDKError?) -> Void)
+  public func refreshDevices(_ complete: @escaping ([Device]?, SDKError?) -> Void)
+  public func processMessages(deviceId: DeviceID, complete: @escaping (SDKError?) -> Void)
+  public func onLoginChanged(loginChanged: @escaping (Bool) -> Void) -> Callback
+  public func onDevicesChanged(devicesChanged: @escaping ([Device]) -> Void) -> Callback
+  public func onInstallableDevicesChanged(installableDevicesChanged: @escaping ([DeviceBLE]) -> Void) -> Callback
+  public var scanning: Bool {
+    get
+    set
+  }
+  public func getWokenUpDevice(_ complete: @escaping (DeviceID?) -> Void)
+  public func getOfflineExpiration(deviceId: DeviceID) -> TimeInterval
+  public func getState() -> BLEState
+  public func onStateChanged(stateChanged: @escaping (BLEState) -> Void) -> Callback
+  public func activateNearestDevice()
+  public func activate(deviceId: DeviceID, keepActiveUntil: Date? = nil, allowButtonKeepActiveCancel: Bool = false, complete: @escaping (TimeInterval?, SDKError?) -> Void)
+  public func deactivate(deviceId: DeviceID, complete: @escaping (TimeInterval?, SDKError?) -> Void)
+  public func onActivated(_ onActivated: @escaping (DeviceID, TimeInterval?, SDKError?, Bool) -> Void) -> Callback
+  public func onDeactivated(_ onDeactivated: @escaping (DeviceID, TimeInterval?, SDKError?) -> Void) -> Callback
+  public func performKeyExchange(deviceId: DeviceID, complete: @escaping (SDKError?) -> Void)
+  public func startInstallation(deviceId: DeviceID, organizationId: Int64?, skipKeyExchange: Bool, complete: @escaping (SDKError?) -> Void)
+  public func startPairingForInstallation(deviceId: DeviceID, pairingCode: String, complete: @escaping (SDKError?) -> Void)
+  public func pairForInstallation(deviceId: DeviceID, complete: @escaping (SDKError?) -> Void)
+  public func finishInstallation(deviceId: DeviceID, name: String, complete: @escaping (SDKError?) -> Void)
+  public func cancelInstallation(deviceId: DeviceID)
+  public func updateFirmware(deviceId: DeviceID, progress: @escaping (FirmwareProgress) -> Void, complete: @escaping (SDKError?) -> Void)
+  public func requestWatchConnect()
+  public func getAccessPoints(deviceId: DeviceID, complete: @escaping ([AccessPoint], SDKError?) -> Void)
+  public func setAccessPoint(deviceId: DeviceID, ssid: String, password: String, complete: @escaping (SDKError?) -> Void)
+  public func getOneTimeAccess(_ deviceId: DeviceID, _ complete: @escaping (Handshake?, [Command], SDKError?) -> Void)
+  public func activateDeviceUsing(_ deviceId: DeviceID, _ handshake: Handshake, _ commands: [Command], _ complete: @escaping (TimeInterval?, SDKError?) -> Void)
+  public func getDevices(_ complete: @escaping ([Device]) -> Void)
+  public func getInstallableDevices() -> [DeviceBLE]
+  @objc deinit
+}
+extension BoldDeviceSDK.CommandType : Swift.Hashable {}
+extension BoldDeviceSDK.CommandType : Swift.RawRepresentable {}
+extension BoldDeviceSDK.Locked : Swift.Equatable {}
+extension BoldDeviceSDK.Locked : Swift.Hashable {}
+extension BoldDeviceSDK.Locked : Swift.RawRepresentable {}
+extension BoldDeviceSDK.FirmwareStatus : Swift.Equatable {}
+extension BoldDeviceSDK.FirmwareStatus : Swift.Hashable {}
+extension BoldDeviceSDK.FirmwareStatus : Swift.RawRepresentable {}
+extension BoldDeviceSDK.SDKErrorType : Swift.Equatable {}
+extension BoldDeviceSDK.SDKErrorType : Swift.Hashable {}
